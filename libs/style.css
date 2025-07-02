@@ -1,0 +1,447 @@
+:root {
+  --main-bg: #fcfcfc;
+  --main-txt: #23292f;
+  --block-bg: #fff;
+  --link: #1d85e6;
+  --code-bg: #f6f8fa;
+  --toc-bg: #f9fafb;
+}
+body.dark {
+  --main-bg: #191c23;
+  --main-txt: #e2e4ea;
+  --block-bg: #22242a;
+  --link: #60a5fa;
+  --code-bg: #21252b;
+  --toc-bg: #24262f;
+}
+body {
+  background: var(--main-bg);
+  color: var(--main-txt);
+  line-height: 1.88;
+  min-height: 100vh;
+  transition: background .22s, color .22s;
+}
+
+/* 主内容区 */
+.wrap {
+  max-width: 100%;
+  width: 1280px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+  background: var(--block-bg);
+  border-radius: 14px;
+  box-shadow: 0 4px 32px #0002;
+  margin-top: 30px;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+#title {
+  font-size: 2.1em;
+  margin-bottom: .6em;
+  text-align: center;
+}
+#meta {
+  text-align: center;
+  color: #888;
+  font-size: .98em;
+  margin-bottom: 2em;
+}
+#content img {
+  max-width: 100%;
+  border-radius: 5px;
+  display: block;
+  margin: 18px auto;
+}
+#content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 14px 0;
+}
+#content th, #content td {
+  padding: .38em 1em;
+  border: 1px solid #e0e6ee;
+}
+#content h1, #content h2, #content h3 {
+  margin: 2em 0 1em;
+  font-weight: 700;
+}
+#content p,
+#content ul,
+#content ol,
+#content pre,
+#content blockquote {
+  margin: 1.1em 0;
+}
+#content blockquote {
+  color: #666;
+  background: #f7fafd;
+  border-left: 4px solid #38bdf8;
+  margin: 1.4em 0;
+  padding: .7em 1em;
+  border-radius: 7px;
+}
+#content code {
+  background: var(--code-bg);
+  border-radius: 4px;
+  padding: .18em .33em;
+  font-size: .97em;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+#content pre {
+  background: var(--code-bg);
+  border-radius: 7px;
+  padding: 1.1em 1em;
+  overflow-x: auto;
+  position: relative;
+}
+.hljs {
+  background: none;
+}
+.copy-btn {
+  position: absolute;
+  top: 9px; right: 12px;
+  font-size: 0.98em;
+  background: #38bdf8;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 2px 11px;
+  cursor: pointer;
+  opacity: 0.88;
+  transition: opacity .15s;
+  z-index: 3;
+}
+.copy-btn:hover {
+  opacity: 1;
+}
+.copy-btn:active { opacity: 1; }
+
+/* 目录（TOC） */
+#toc {
+  position: fixed;
+  top: 90px;
+  left: 20px;
+  background: var(--toc-bg);
+  border-radius: 9px;
+  box-shadow: 0 2px 12px #0002;
+  padding: 1.1em .9em;
+  width: 450px;
+  max-width: 100%;
+  font-size: .97em;
+  z-index: 10;
+  max-height: 70vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--link) #e0e7ef;
+  position: absolute;
+}
+#toc::-webkit-scrollbar {
+  width: 8px;
+  background: #f3f4f7;
+}
+#toc::-webkit-scrollbar-thumb {
+  background: var(--link);
+  border-radius: 4px;
+}
+#toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#toc a {
+  color: var(--link);
+  text-decoration: none;
+  display: block;
+  padding: .18em 0;
+}
+#toc a.active {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+/* 主题/返回顶部按钮 */
+#themeBtn {
+  position: fixed;
+  right: 22px;
+  top: 24px;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.2em;
+  cursor: pointer;
+  z-index: 99;
+  opacity: .83;
+}
+#themeBtn:hover {
+  opacity: 1;
+}
+#topBtn {
+  position: fixed;
+  right: 24px;
+  bottom: 44px;
+  background: #38bdf8;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.4em;
+  cursor: pointer;
+  opacity: .7;
+  z-index: 99;
+  display: none;
+}
+
+/* Loading遮罩 */
+#loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--main-bg);
+  color: var(--main-txt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  font-size: 1.12em;
+  text-align: center;
+  margin: 120px auto 60px;
+}
+
+/* 响应式 */
+@media (max-width: 960px) {
+  .wrap {
+    margin-top: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  #toc {
+    position: static !important;
+    max-width: 100%;
+    margin-bottom: 2em;
+  }
+}
+@media (max-width: 600px) {
+  .wrap {
+    padding: 14px 1vw 44px;
+  }
+  #toc {
+    font-size: 1em;
+    margin-bottom: 1.7em;
+    display: none !important;
+  }
+  #themeBtn, #topBtn {
+    right: 12px;
+  }
+}
+
+/* ======= 工具条与按钮 ======= */
+.toolbar {
+  position: fixed;
+  top: 22px;
+  right: 28px;
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background: rgba(252,252,252,0.95);
+  border-radius: 18px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 13px 20px 13px 18px;
+  min-width: 88px;
+  transition: background .22s, color .22s;
+  gap: 13px;
+}
+body.dark .toolbar {
+  background: rgba(25,28,35,0.94);
+  box-shadow: 0 2px 8px #0003;
+}
+.toolbar button,
+.font-controls button,
+.font-controls select {
+  font-size: 1.06em;
+  padding: 4px 0;
+  border-radius: 7px;
+  border: none;
+  background: #f6f8fa;
+  color: #222;
+  transition: background .18s;
+  cursor: pointer;
+  margin: 0;
+  width: 100%;
+}
+body.dark .toolbar button,
+body.dark .font-controls button,
+body.dark .font-controls select {
+  background: #24242c;
+  color: #eee;
+}
+.toolbar button:active,
+.font-controls button:active { opacity: .82; }
+.font-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+  width: 100%;
+}
+.font-controls select { min-width: 108px; }
+@media (max-width: 700px) {
+  .toolbar, .toolbar-toggle { display: none !important; }
+}
+
+/* ======= 返回顶部&打赏 ======= */
+#topBtn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1201;
+  background: var(--link);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.18em;
+  box-shadow: 0 2px 8px #0002;
+  cursor: pointer;
+  display: none;
+}
+#rewardBtn {
+  position: fixed;
+  right: 24px;
+  bottom: 84px;
+  z-index: 1200;
+  background: #ffbe0b;
+  color: #fff;
+  padding: 13px 25px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px #0002;
+  font-weight: bold;
+  font-size: 1.12em;
+  letter-spacing: .1em;
+  cursor: pointer;
+  transition: opacity .18s;
+  text-decoration: none;
+}
+@media (max-width: 700px) {
+  #topBtn, #rewardBtn { right: 10px; }
+}
+
+/* ======= 目录 ======= */
+.table-of-contents { margin: 0 0 20px 0; }
+.table-of-contents ul, .table-of-contents ol { padding-left: 22px; }
+
+/* ======= 内容区 ======= */
+#content pre, #content table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+#content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+#content strong, #content a, #content code, #content pre, #content td {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+/* ======= 加载、弹窗、其他 ======= */
+#rewardModal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.44);
+  align-items: center;
+  justify-content: center;
+}
+#rewardModal > div {
+  position: relative;
+  max-width: 90%;
+  width: 890px;
+  height: 90vh;
+  max-height: 100%;
+  background: var(--block-bg);
+  border-radius: 14px;
+  box-shadow: 0 6px 32px #0004;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#rewardClose {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  z-index: 10;
+  font-size: 2em;
+  background: transparent;
+  border: none;
+  color: var(--main-txt);
+  cursor: pointer;
+}
+.lang-switch {
+  margin-top: 9px;
+  display: flex;
+  gap: 7px;
+}
+.lang-switch button {
+  padding: 2px 11px;
+  border-radius: 6px;
+  background: #e0e7ef;
+  color: #1a202c;
+  border: none;
+  cursor: pointer;
+  font-size: .98em;
+  transition: background .18s;
+}
+.lang-switch button.active {
+  background: #2563eb;
+  color: #fff;
+}
+body.dark .lang-switch button {
+  background: #222b3a;
+  color: #cfd9e6;
+}
+body.dark .lang-switch button.active {
+  background: #38bdf8;
+  color: #19232d;
+}
+/* 修复有序列表数字太长被遮住的问题 */
+#content ol {
+  list-style-position: inside;
+  /* 或者你喜欢数字左对齐，可用 outside，并加 padding-left */
+  /* padding-left: 2.5em; */
+  word-break: break-word;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+#content ol li {
+  padding-left: 0.7em;
+  /* 确保数字和内容间有空隙，数字再长也不遮盖内容 */
+  text-indent: 0;
+  margin-left: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* 强力兜底，内容再长也不会超出 */
+#content ol,
+#content ul {
+  overflow-x: auto;
+  max-width: 100%;
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>Markdown 阅读页 DEMO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="本地Markdown渲染页，无需CDN">
+  <!-- 本地css -->
+  <link rel="stylesheet" href="libs/github.min.css" id="hljs-theme">
+  <link rel="stylesheet" href="libs/style.css">
+  <style>
+    kbd {
+      display: inline-block;
+      background: #f7f7fa;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.97em;
+      padding: 1px 6px;
+      margin: 0 2px;
+      font-family: 'Consolas', 'Menlo', 'Monaco', monospace;
+      color: #222;
+      box-shadow: 0 1px 0 #eee inset;
+    }
+
+    mark {
+      background: #ffe066;
+      color: #222;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    details {
+      margin: 6px 0 10px 0;
+      background: #f7f8fa;
+      border-radius: 6px;
+      border: 1px solid #e0e4e8;
+      padding: 8px 14px;
+    }
+    summary {
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="toolbar">
+  <button id="themeBtn" title="切换暗/亮主题">🌙</button>
+  <div class="font-controls">
+    <button id="fontSmall" title="减小字号">A-</button>
+    <button id="fontLarge" title="增大字号">A+</button>
+    <button id="fontNormal" title="恢复默认字号">恢复默认</button>
+    <select id="fontFamily" title="字体选择">
+      <option value="">系统默认</option>
+      <option value="PingFang SC">苹方</option>
+      <option value="Microsoft YaHei">雅黑</option>
+      <option value="Source Han Sans SC">思源黑体</option>
+      <option value="SimSun, serif">宋体/Serif</option>
+      <option value="monospace">等宽/Monospace</option>
+    </select>
+  </div>
+</div>
+<button id="topBtn" title="返回顶部">↑</button>
+<div id="loading">加载中...</div>
+<div class="wrap" style="display:none;">
+  <button id="tocToggleBtn" title="显示/隐藏目录">目录</button>
+  <button id="toolbarToggle" title="工具菜单" class="toolbar-toggle">🛠</button>
+  <div class="lang-switch">
+    <button id="langHome" type="button">首页</button>
+    <button id="langZh" type="button">中文</button>
+    <button id="langEn" type="button">English</button>
+  </div>
+  <!-- <div id="toc" style="display: none;"></div> -->
+  <div id="title"></div>
+  <div id="meta"></div>
+  <div id="content"></div>
+</div>
+<a id="rewardBtn" title="支持作者">❤️ 打赏</a>
+<div id="rewardModal">
+  <div>
+    <button id="rewardClose">×</button>
+    <iframe id="rewardFrame" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+  </div>
+</div>
+<!-- 本地JS依赖 -->
+<script src="libs/markdown-it.min.js"></script>
+<script src="libs/markdownItAnchor.umd.js"></script>
+<script src="libs/markdown-it-toc-done-right.js"></script>
+<script src="libs/highlight.min.js"></script>
+<script src="./main.js"></script>
+<script>
+  // ====== 语言切换按钮 ======
+const langZh = document.getElementById('langZh');
+const langEn = document.getElementById('langEn');
+// 地址栏目中name 出现 / 隐藏 语言切换按钮
+var params = new URLSearchParams(window.location.search);
+
+if (params.get('name')) {
+  var name = decodeURIComponent(params.get('name'));
+  if (name.indexOf('/') !== -1) {
+    langZh.style.display = 'none';
+    langEn.style.display = 'none';
+  }
+}
+document.getElementById('langHome').onclick = function() {
+  window.location.href = '/';
+};
+
+// 读取和保存当前语言
+function getCurrentLang() {
+  var params = new URLSearchParams(window.location.search);
+  var lang = params.get('lang');
+  if (lang) {
+    return lang;
+  }
+  return localStorage.getItem('md-lang') || 'zh';
+}
+function setLangUI(lang) {
+  if(lang === 'zh') {
+    langZh.classList.add('active');
+    langEn.classList.remove('active');
+  } else {
+    langEn.classList.add('active');
+    langZh.classList.remove('active')
+  }
+}
+setLangUI(getCurrentLang());
+
+// 切换语言触发
+langZh.onclick = function() {
+  if(getCurrentLang() !== 'zh') {
+    localStorage.setItem('md-lang', 'zh');
+    setLangUI('zh');
+    getNewfetchArticle('zh');
+  }
+};
+langEn.onclick = function() {
+  if(getCurrentLang() !== 'en') {
+    localStorage.setItem('md-lang', 'en');
+    setLangUI('en');
+    getNewfetchArticle('en');
+  }
+};
+function getNewfetchArticle(lang) {
+  // 假设当前url有lang参数，则切换为新lang刷新
+  let url = new URL(window.location.href);
+  url.searchParams.set('lang', lang);
+  window.location.href = url.toString();
+}
+</script>
+</body>
+</html>
