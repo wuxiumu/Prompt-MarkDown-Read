@@ -17,7 +17,7 @@ echo '[toc] '.PHP_EOL;
 
 if(!file_exists($file)){
     // 判断字符 是否存在 _zh
-    if(strpos($name,'_zh')!==false){ // 中文
+    if(strpos($name,'_zh')!==false || strpos($name,'_en')!==false){ // 中文
         // 尝试找英文
     }else{
         $file='./docs/'.$name.'_zh.md';
